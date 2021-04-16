@@ -11,6 +11,8 @@ import com.google.common.net.UrlEscapers;
 
 import org.apache.commons.io.IOUtils;
 
+import org.tinylog.Logger;
+
 /**
  * Class for obtaining geolocation information of an IP address. The class uses
  * the <a href="http://ip-api.com/">IP-API.com</a> service.
@@ -56,7 +58,9 @@ public class GeoLocator {
         } else {
             url = new URL(GEOLOCATOR_SERVICE_URI);
         }
+        Logger.info("Retrieving JSON data from {}", url);
         String s = IOUtils.toString(url, "UTF-8");
+        Logger.debug("JSON response: {}", s);
         return OBJECT_MAPPER.readValue(s, GeoLocation.class);
     }
 
