@@ -20,6 +20,7 @@
 		<project.build.outputEncoding>UTF-8</project.build.outputEncoding>
 		<maven.compiler.release>11</maven.compiler.release>
 		<jackson-databind.version>2.12.3</jackson-databind.version>
+		<tinylog.version>2.2.1</tinylog.version>
 		<mainClass>geolocator.GeoLocator</mainClass>
 	</properties>
 	<dependencies>
@@ -46,6 +47,18 @@
 			<artifactId>lombok</artifactId>
 			<version>1.18.20</version>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.tinylog</groupId>
+			<artifactId>tinylog-api</artifactId>
+			<version>${tinylog.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.tinylog</groupId>
+			<artifactId>tinylog-impl</artifactId>
+			<version>${tinylog.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 	<build>
