@@ -5,6 +5,7 @@ import java.net.URL;
 import java.io.IOException;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.google.common.net.UrlEscapers;
@@ -61,7 +62,26 @@ public class GeoLocator {
         Logger.info("Retrieving JSON data from {}", url);
         String s = IOUtils.toString(url, "UTF-8");
         Logger.debug("JSON response: {}", s);
-        return OBJECT_MAPPER.readValue(s, GeoLocation.class);
+        return parseJsonResponse(s);
+    }
+
+    private GeoLocation parseJsonResponse(String s) {
+        try {
+            JsonNode root = OBJECT_MAPPER.readTree(s);
+            String status = root.get("status").textValue();
+            Logger.debug("Status in response: {}", status);
+            if (status.equals("success")) {
+                return OBJECT_MAPPER.readValue(s, GeoLocation.class);
+            }
+            if (status.equals("fail")) {
+                String message = root.get("message").textValue();
+                throw new IllegalArgumentException(message);
+            }
+        } catch (IllegalArgumentException e) {
+            throw e;
+        } catch (Exception e) {
+        }
+        throw new AssertionError("Malformed response");
     }
 
     // CHECKSTYLE:OFF
